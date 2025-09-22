@@ -387,7 +387,7 @@ Get real-time prices for the top 100 cryptocurrencies!
         message = f"""
 💰 **{coin.upper()} Price**
 
-💵 **Current:** ${current_price:,.2f}
+💵 **Current:** ${current_price:,.3f}
 {change_emoji} **24h Change:** {change_24h:+.2f}%
 📊 **24h Volume:** ${volume_24h:,.0f}
 
@@ -414,7 +414,7 @@ Get real-time prices for the top 100 cryptocurrencies!
                 change_emoji = "📈" if change_24h > 0 else "📉" if change_24h < 0 else "➡️"
                 
                 coin_name = coin.replace('-', ' ').title()
-                results.append(f"{coin_name}: ${current_price:,.2f} {change_emoji} {change_24h:+.2f}%")
+                results.append(f"{coin_name}: ${current_price:,.3f} {change_emoji} {change_24h:+.2f}%")
         
         if results:
             message = "🏆 **Top 10 Cryptocurrencies**\n\n" + "\n".join(results)
@@ -442,7 +442,7 @@ Get real-time prices for the top 100 cryptocurrencies!
                 change_emoji = "📈" if change_24h > 0 else "📉" if change_24h < 0 else "➡️"
                 
                 coin_name = coin.replace('-', ' ').title()
-                results.append(f"{coin_name}: ${current_price:,.2f} {change_emoji} {change_24h:+.2f}%")
+                results.append(f"{coin_name}: ${current_price:,.3f} {change_emoji} {change_24h:+.2f}%")
         
         if results:
             message = "🏆 **Top 20 Cryptocurrencies**\n\n" + "\n".join(results)
