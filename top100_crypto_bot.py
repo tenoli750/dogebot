@@ -339,19 +339,19 @@ class Top100CryptoBot:
 Get real-time prices for the top 100 cryptocurrencies!
 
 **Commands:**
-/price <coin> - Get current price
+/price <coin> or /p <coin> - Get current price
 /top10 - Show top 10 coins
 /top20 - Show top 20 coins
 /help - Show this help
 
 **Popular Examples:**
-/price bitcoin
-/price ethereum
-/price solana
-/price dogecoin
-/price memecore
-/price m
-/price cardano
+/price bitcoin or /p bitcoin
+/price ethereum or /p ethereum
+/price solana or /p solana
+/price dogecoin or /p dogecoin
+/price memecore or /p memecore
+/price m or /p m
+/price cardano or /p cardano
         """
         await update.message.reply_text(welcome_message, parse_mode='Markdown')
     
@@ -457,7 +457,7 @@ Get real-time prices for the top 100 cryptocurrencies!
 
 **Commands:**
 /start - Welcome message
-/price <coin> - Get current price
+/price <coin> or /p <coin> - Get current price
 /top10 - Show top 10 coins
 /top20 - Show top 20 coins
 /help - Show this help
@@ -549,6 +549,7 @@ def main():
     # Add command handlers
     application.add_handler(CommandHandler("start", bot.start_command))
     application.add_handler(CommandHandler("price", bot.price_command))
+    application.add_handler(CommandHandler("p", bot.price_command))  # Shortcut for /price
     application.add_handler(CommandHandler("top10", bot.top10_command))
     application.add_handler(CommandHandler("top20", bot.top20_command))
     application.add_handler(CommandHandler("help", bot.help_command))
