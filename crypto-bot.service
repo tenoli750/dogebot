@@ -1,0 +1,17 @@
+[Unit]
+Description=Crypto Bot Telegram Service
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/crypto-bot
+Environment=PATH=/home/ubuntu/crypto-bot/crypto_bot_env/bin
+ExecStart=/home/ubuntu/crypto-bot/crypto_bot_env/bin/python top100_crypto_bot.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

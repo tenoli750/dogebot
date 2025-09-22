@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: crypto-bot
+    env: python
+    buildCommand: pip install -r requirements_crypto_bot.txt
+    startCommand: python top100_crypto_bot.py
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        value: 8013494369:AAEB-S-1e-6PUHSjagbFsUilda9pnuUH3xA
+    healthCheckPath: /health
+    autoDeploy: true
