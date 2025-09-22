@@ -17,9 +17,9 @@ logger = logging.getLogger(__name__)
 class Top100CryptoBot:
     def __init__(self):
         self.session = None
-        # Top 100 cryptocurrencies by market cap
+        # Top 100+ cryptocurrencies by market cap + popular tokens
         self.supported_coins = {
-            # Top 20
+            # Top 20 Major Coins
             'bitcoin': 'bitcoin', 'btc': 'bitcoin',
             'ethereum': 'ethereum', 'eth': 'ethereum',
             'tether': 'tether', 'usdt': 'tether',
@@ -43,51 +43,102 @@ class Top100CryptoBot:
             'uniswap': 'uniswap', 'uni': 'uniswap',
             'ethereum-classic': 'ethereum-classic', 'etc': 'ethereum-classic',
             
-            # 21-40
-            'stellar': 'stellar', 'xlm': 'stellar',
-            'monero': 'monero', 'xmr': 'monero',
-            'cosmos': 'cosmos', 'atom': 'cosmos',
-            'aptos': 'aptos', 'apt': 'aptos',
-            'filecoin': 'filecoin', 'fil': 'filecoin',
-            'hedera-hashgraph': 'hedera-hashgraph', 'hbar': 'hedera-hashgraph',
-            'vechain': 'vechain', 'vet': 'vechain',
-            'cronos': 'cronos', 'cro': 'cronos',
-            'arbitrum': 'arbitrum', 'arb': 'arbitrum',
-            'algorand': 'algorand', 'algo': 'algorand',
-            'the-graph': 'the-graph', 'grt': 'the-graph',
-            'optimism': 'optimism', 'op': 'optimism',
-            'fantom': 'fantom', 'ftm': 'fantom',
-            'apecoin': 'apecoin', 'ape': 'apecoin',
-            'elrond-erd-2': 'elrond-erd-2', 'egld': 'elrond-erd-2',
-            'the-sandbox': 'the-sandbox', 'sand': 'the-sandbox',
-            'decentraland': 'decentraland', 'mana': 'decentraland',
-            'axie-infinity': 'axie-infinity', 'axs': 'axie-infinity',
-            'chiliz': 'chiliz', 'chz': 'chiliz',
-            'flow': 'flow', 'flow': 'flow',
-            'tezos': 'tezos', 'xtz': 'tezos',
-            'eos': 'eos', 'eos': 'eos',
+            # Popular Meme Coins
+            'shiba-inu': 'shiba-inu', 'shib': 'shiba-inu',
+            'pepe': 'pepe', 'pepe': 'pepe',
+            'floki': 'floki', 'floki': 'floki',
+            'bonk': 'bonk', 'bonk': 'bonk',
+            'dogwifhat': 'dogwifhat', 'wif': 'dogwifhat',
+            'myro': 'myro', 'myro': 'myro',
+            'popcat': 'popcat', 'popcat': 'popcat',
+            'bome': 'bome', 'bome': 'bome',
+            'wif': 'dogwifhat', 'wif': 'dogwifhat',
+            
+            # DeFi Tokens
             'aave': 'aave', 'aave': 'aave',
-            'quant-network': 'quant-network', 'qnt': 'quant-network',
-            'theta-token': 'theta-token', 'theta': 'theta-token',
-            'bitcoin-sv': 'bitcoin-sv', 'bsv': 'bitcoin-sv',
-            'maker': 'maker', 'mkr': 'maker',
             'compound': 'compound', 'comp': 'compound',
+            'maker': 'maker', 'mkr': 'maker',
             'sushi': 'sushi', 'sushi': 'sushi',
             'yearn-finance': 'yearn-finance', 'yfi': 'yearn-finance',
             'synthetix': 'synthetix', 'snx': 'synthetix',
             'curve-dao-token': 'curve-dao-token', 'crv': 'curve-dao-token',
             '1inch': '1inch', '1inch': '1inch',
             'balancer': 'balancer', 'bal': 'balancer',
+            'pancakeswap-token': 'pancakeswap-token', 'cake': 'pancakeswap-token',
+            'jupiter-exchange-solana': 'jupiter-exchange-solana', 'jup': 'jupiter-exchange-solana',
+            'raydium': 'raydium', 'ray': 'raydium',
+            'orca': 'orca', 'orca': 'orca',
+            
+            # Layer 2 & Scaling
+            'arbitrum': 'arbitrum', 'arb': 'arbitrum',
+            'optimism': 'optimism', 'op': 'optimism',
+            'base': 'base', 'base': 'base',
+            'polygon': 'polygon', 'matic': 'polygon',
+            'immutable-x': 'immutable-x', 'imx': 'immutable-x',
+            'loopring': 'loopring', 'lrc': 'loopring',
+            
+            # AI & Big Data
+            'fetch-ai': 'fetch-ai', 'fet': 'fetch-ai',
+            'singularitynet': 'singularitynet', 'agix': 'singularitynet',
+            'ocean-protocol': 'ocean-protocol', 'ocean': 'ocean-protocol',
+            'render-token': 'render-token', 'rndr': 'render-token',
+            'akash-network': 'akash-network', 'akt': 'akash-network',
+            'bittensor': 'bittensor', 'tao': 'bittensor',
+            'worldcoin-wld': 'worldcoin-wld', 'wld': 'worldcoin-wld',
+            
+            # Gaming & Metaverse
+            'the-sandbox': 'the-sandbox', 'sand': 'the-sandbox',
+            'decentraland': 'decentraland', 'mana': 'decentraland',
+            'axie-infinity': 'axie-infinity', 'axs': 'axie-infinity',
+            'gala': 'gala', 'gala': 'gala',
+            'enjincoin': 'enjincoin', 'enj': 'enjincoin',
+            'illuvium': 'illuvium', 'ilv': 'illuvium',
+            'stepn': 'stepn', 'gmt': 'stepn',
+            'magic': 'magic', 'magic': 'magic',
+            
+            # Privacy Coins
+            'monero': 'monero', 'xmr': 'monero',
+            'zcash': 'zcash', 'zec': 'zcash',
+            'dash': 'dash', 'dash': 'dash',
+            'horizen': 'horizen', 'zen': 'horizen',
+            
+            # Storage & Infrastructure
+            'filecoin': 'filecoin', 'fil': 'filecoin',
+            'arweave': 'arweave', 'ar': 'arweave',
+            'sia': 'sia', 'sc': 'sia',
+            'storj': 'storj', 'storj': 'storj',
+            
+            # Oracle & Data
+            'chainlink': 'chainlink', 'link': 'chainlink',
+            'band-protocol': 'band-protocol', 'band': 'band-protocol',
+            'api3': 'api3', 'api3': 'api3',
+            'tellor': 'tellor', 'trb': 'tellor',
+            
+            # Additional Major Coins
+            'stellar': 'stellar', 'xlm': 'stellar',
+            'cosmos': 'cosmos', 'atom': 'cosmos',
+            'aptos': 'aptos', 'apt': 'aptos',
+            'hedera-hashgraph': 'hedera-hashgraph', 'hbar': 'hedera-hashgraph',
+            'vechain': 'vechain', 'vet': 'vechain',
+            'cronos': 'cronos', 'cro': 'cronos',
+            'algorand': 'algorand', 'algo': 'algorand',
+            'the-graph': 'the-graph', 'grt': 'the-graph',
+            'fantom': 'fantom', 'ftm': 'fantom',
+            'apecoin': 'apecoin', 'ape': 'apecoin',
+            'elrond-erd-2': 'elrond-erd-2', 'egld': 'elrond-erd-2',
+            'chiliz': 'chiliz', 'chz': 'chiliz',
+            'flow': 'flow', 'flow': 'flow',
+            'tezos': 'tezos', 'xtz': 'tezos',
+            'eos': 'eos', 'eos': 'eos',
+            'quant-network': 'quant-network', 'qnt': 'quant-network',
+            'theta-token': 'theta-token', 'theta': 'theta-token',
+            'bitcoin-sv': 'bitcoin-sv', 'bsv': 'bitcoin-sv',
             'kyber-network-crystal': 'kyber-network-crystal', 'knc': 'kyber-network-crystal',
             'ren': 'ren', 'ren': 'ren',
             '0x': '0x', 'zrx': '0x',
             'bancor': 'bancor', 'bnt': 'bancor',
-            'loopring': 'loopring', 'lrc': 'loopring',
-            'enjincoin': 'enjincoin', 'enj': 'enjincoin',
             'basic-attention-token': 'basic-attention-token', 'bat': 'basic-attention-token',
             'harmony': 'harmony', 'one': 'harmony',
-            'dash': 'dash', 'dash': 'dash',
-            'zcash': 'zcash', 'zec': 'zcash',
             'neo': 'neo', 'neo': 'neo',
             'waves': 'waves', 'waves': 'waves',
             'qtum': 'qtum', 'qtum': 'qtum',
@@ -114,22 +165,136 @@ class Top100CryptoBot:
             'melon': 'melon', 'mln': 'melon',
             'gnosis': 'gnosis', 'gno': 'gnosis',
             'numeraire': 'numeraire', 'nmr': 'numeraire',
-            'augur': 'augur', 'rep': 'augur',
-            'golem': 'golem', 'gnt': 'golem',
-            'status': 'status', 'snt': 'status',
-            'district0x': 'district0x', 'dnt': 'district0x',
-            'civic': 'civic', 'cvc': 'civic',
-            'funfair': 'funfair', 'fun': 'funfair',
-            'salt': 'salt', 'salt': 'salt',
-            'power-ledger': 'power-ledger', 'powr': 'power-ledger',
-            'cindicator': 'cindicator', 'cnd': 'cindicator',
-            'wax': 'wax', 'waxp': 'wax',
-            'dentacoin': 'dentacoin', 'dnt': 'dentacoin',
-            'dent': 'dent', 'dent': 'dent',
-            'adx-net': 'adx-net', 'adx': 'adx-net',
-            'melon': 'melon', 'mln': 'melon',
-            'gnosis': 'gnosis', 'gno': 'gnosis',
-            'numeraire': 'numeraire', 'nmr': 'numeraire'
+            
+            # More Popular Tokens
+            'injective': 'injective', 'inj': 'injective',
+            'sei': 'sei', 'sei': 'sei',
+            'sui': 'sui', 'sui': 'sui',
+            'toncoin': 'toncoin', 'ton': 'toncoin',
+            'kaspa': 'kaspa', 'kas': 'kaspa',
+            'thorchain': 'thorchain', 'rune': 'thorchain',
+            'osmosis': 'osmosis', 'osmo': 'osmosis',
+            'juno': 'juno', 'juno': 'juno',
+            'secret': 'secret', 'scrt': 'secret',
+            'kava': 'kava', 'kava': 'kava',
+            'terra-luna': 'terra-luna', 'luna': 'terra-luna',
+            'terra-luna-2': 'terra-luna-2', 'luna2': 'terra-luna-2',
+            'celo': 'celo', 'celo': 'celo',
+            'mina': 'mina', 'mina': 'mina',
+            'celestia': 'celestia', 'tia': 'celestia',
+            'dymension': 'dymension', 'dym': 'dymension',
+            'altlayer': 'altlayer', 'alt': 'altlayer',
+            'eigenlayer': 'eigenlayer', 'eigen': 'eigenlayer',
+            'pendle': 'pendle', 'pendle': 'pendle',
+            'ethena': 'ethena', 'ena': 'ethena',
+            'wormhole': 'wormhole', 'w': 'wormhole',
+            'jito': 'jito', 'jito': 'jito',
+            'pyth': 'pyth', 'pyth': 'pyth',
+            'tensor': 'tensor', 'tnsr': 'tensor',
+            'metis': 'metis', 'metis': 'metis',
+            'mantle': 'mantle', 'mnt': 'mantle',
+            'blast': 'blast', 'blast': 'blast',
+            'mode': 'mode', 'mode': 'mode',
+            'zksync': 'zksync', 'zk': 'zksync',
+            'linea': 'linea', 'linea': 'linea',
+            'scroll': 'scroll', 'scroll': 'scroll',
+            'taiko': 'taiko', 'taiko': 'taiko',
+            'polygon-zkevm': 'polygon-zkevm', 'polygon': 'polygon-zkevm',
+            'starknet': 'starknet', 'strk': 'starknet',
+            'dydx': 'dydx', 'dydx': 'dydx',
+            'perpetual-protocol': 'perpetual-protocol', 'perp': 'perpetual-protocol',
+            'gains-network': 'gains-network', 'gains': 'gains-network',
+            'uma': 'uma', 'uma': 'uma',
+            'bob': 'bob', 'bob': 'bob',
+            'manta': 'manta', 'manta': 'manta',
+            'zksync-era': 'zksync-era', 'era': 'zksync-era',
+            'layerzero': 'layerzero', 'zro': 'layerzero',
+            'stargate-finance': 'stargate-finance', 'stg': 'stargate-finance',
+            'axelar': 'axelar', 'axl': 'axelar',
+            'chainflip': 'chainflip', 'flip': 'chainflip',
+            'squid': 'squid', 'squid': 'squid',
+            'router-protocol': 'router-protocol', 'route': 'router-protocol',
+            'multichain': 'multichain', 'multi': 'multichain',
+            'anyswap': 'anyswap', 'any': 'anyswap',
+            'hop-protocol': 'hop-protocol', 'hop': 'hop-protocol',
+            'synapse': 'synapse', 'syn': 'synapse',
+            'across-protocol': 'across-protocol', 'acx': 'across-protocol',
+            'bungee': 'bungee', 'bungee': 'bungee',
+            'socket': 'socket', 'socket': 'socket',
+            'li-fi': 'li-fi', 'lifi': 'li-fi',
+            'jumper': 'jumper', 'jumper': 'jumper',
+            'rango': 'rango', 'rango': 'rango',
+            'xy-finance': 'xy-finance', 'xy': 'xy-finance',
+            'debridge': 'debridge', 'debridge': 'debridge',
+            'biconomy': 'biconomy', 'bico': 'biconomy',
+            'gelato': 'gelato', 'gel': 'gelato',
+            'openzeppelin': 'openzeppelin', 'oz': 'openzeppelin',
+            'tenderly': 'tenderly', 'tenderly': 'tenderly',
+            'alchemy': 'alchemy', 'alchemy': 'alchemy',
+            'infura': 'infura', 'infura': 'infura',
+            'quicknode': 'quicknode', 'quicknode': 'quicknode',
+            'ankr': 'ankr', 'ankr': 'ankr',
+            'pocket-network': 'pocket-network', 'pokt': 'pocket-network',
+            'livepeer': 'livepeer', 'lpt': 'livepeer',
+            'audius': 'audius', 'audio': 'audius',
+            'ipfs': 'ipfs', 'ipfs': 'ipfs',
+            'pinata': 'pinata', 'pinata': 'pinata',
+            'nft-storage': 'nft-storage', 'nft': 'nft-storage',
+            'web3-storage': 'web3-storage', 'web3': 'web3-storage',
+            'fleek': 'fleek', 'fleek': 'fleek',
+            'skynet': 'skynet', 'skynet': 'skynet',
+            'swarm': 'swarm', 'swarm': 'swarm',
+            'maidsafe': 'maidsafe', 'maid': 'maidsafe',
+            'safe': 'safe', 'safe': 'safe',
+            'gnosis-safe': 'gnosis-safe', 'safe': 'gnosis-safe',
+            'argent': 'argent', 'argent': 'argent',
+            'authereum': 'authereum', 'authereum': 'authereum',
+            'portis': 'portis', 'portis': 'portis',
+            'torus': 'torus', 'torus': 'torus',
+            'fortmatic': 'fortmatic', 'fortmatic': 'fortmatic',
+            'walletconnect': 'walletconnect', 'walletconnect': 'walletconnect',
+            'rainbow': 'rainbow', 'rainbow': 'rainbow',
+            'metamask': 'metamask', 'metamask': 'metamask',
+            'coinbase-wallet': 'coinbase-wallet', 'coinbase': 'coinbase-wallet',
+            'trust-wallet': 'trust-wallet', 'trust': 'trust-wallet',
+            'imtoken': 'imtoken', 'imtoken': 'imtoken',
+            'tokenpocket': 'tokenpocket', 'tokenpocket': 'tokenpocket',
+            'math-wallet': 'math-wallet', 'math': 'math-wallet',
+            'bitpie': 'bitpie', 'bitpie': 'bitpie',
+            'coolwallet': 'coolwallet', 'coolwallet': 'coolwallet',
+            'ledger': 'ledger', 'ledger': 'ledger',
+            'trezor': 'trezor', 'trezor': 'trezor',
+            'keepkey': 'keepkey', 'keepkey': 'keepkey',
+            'bitbox': 'bitbox', 'bitbox': 'bitbox',
+            'coldcard': 'coldcard', 'coldcard': 'coldcard',
+            'cobo': 'cobo', 'cobo': 'cobo',
+            'casa': 'casa', 'casa': 'casa',
+            'unchained-capital': 'unchained-capital', 'unchained': 'unchained-capital',
+            'coinkite': 'coinkite', 'coinkite': 'coinkite',
+            'opendime': 'opendime', 'opendime': 'opendime',
+            'jade': 'jade', 'jade': 'jade',
+            'specter': 'specter', 'specter': 'specter',
+            'electrum': 'electrum', 'electrum': 'electrum',
+            'wasabi': 'wasabi', 'wasabi': 'wasabi',
+            'samourai': 'samourai', 'samourai': 'samourai',
+            'sparrow': 'sparrow', 'sparrow': 'sparrow',
+            'bluewallet': 'bluewallet', 'bluewallet': 'bluewallet',
+            'exodus': 'exodus', 'exodus': 'exodus',
+            'atomic': 'atomic', 'atomic': 'atomic',
+            'guarda': 'guarda', 'guarda': 'guarda',
+            'freewallet': 'freewallet', 'freewallet': 'freewallet',
+            'coinomi': 'coinomi', 'coinomi': 'coinomi',
+            'jaxx': 'jaxx', 'jaxx': 'jaxx',
+            'bread': 'bread', 'bread': 'bread',
+            'edge': 'edge', 'edge': 'edge',
+            'mycelium': 'mycelium', 'mycelium': 'mycelium',
+            'bitpay': 'bitpay', 'bitpay': 'bitpay',
+            'copay': 'copay', 'copay': 'copay',
+            'bitcoin-gold': 'bitcoin-gold', 'btg': 'bitcoin-gold',
+            'bitcoin-diamond': 'bitcoin-diamond', 'bcd': 'bitcoin-diamond',
+            'bitcoin-private': 'bitcoin-private', 'btcp': 'bitcoin-private',
+            'bitcoin-atom': 'bitcoin-atom', 'bca': 'bitcoin-atom',
+            'bitcoin-post-quantum': 'bitcoin-post-quantum', 'bpq': 'bitcoin-post-quantum'
         }
     
     async def start_session(self):
@@ -288,7 +453,7 @@ Get real-time prices for the top 100 cryptocurrencies!
     async def help_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Handle /help command"""
         help_text = """
-🤖 **Top 100 Crypto Bot Help**
+🤖 **Top 100+ Crypto Bot Help**
 
 **Commands:**
 /start - Welcome message
@@ -297,21 +462,46 @@ Get real-time prices for the top 100 cryptocurrencies!
 /top20 - Show top 20 coins
 /help - Show this help
 
-**Popular Coins:**
+**Major Coins:**
 Bitcoin (BTC), Ethereum (ETH), Tether (USDT), BNB, Solana (SOL)
 USDC, XRP, Staked ETH, Dogecoin (DOGE), Memecore (M)
 Cardano (ADA), Tron (TRX), Avalanche (AVAX), Chainlink (LINK), Polkadot (DOT)
 Bitcoin Cash (BCH), Near (NEAR), Polygon (MATIC), Litecoin (LTC)
 
 **Meme Coins:**
+Dogecoin (DOGE), Shiba Inu (SHIB), Pepe (PEPE), Floki (FLOKI)
+Bonk (BONK), Dogwifhat (WIF), Myro (MYRO), Popcat (POPCAT)
 Memecore (M) - BNB Chain Contract: 0x22b1458e780f8fa71e2f84502cee8b5a3cc731fa
 
-**Examples:**
+**DeFi Tokens:**
+Uniswap (UNI), Aave (AAVE), Compound (COMP), Maker (MKR)
+Sushi (SUSHI), Yearn Finance (YFI), Synthetix (SNX), Curve (CRV)
+1inch (1INCH), Balancer (BAL), PancakeSwap (CAKE), Jupiter (JUP)
+
+**Layer 2 & Scaling:**
+Arbitrum (ARB), Optimism (OP), Base (BASE), Polygon (MATIC)
+Immutable X (IMX), Loopring (LRC), Metis (METIS), Mantle (MNT)
+Blast (BLAST), Mode (MODE), zkSync (ZK), Linea (LINEA)
+
+**AI & Big Data:**
+Fetch.ai (FET), SingularityNET (AGIX), Ocean Protocol (OCEAN)
+Render (RNDR), Akash Network (AKT), Bittensor (TAO), Worldcoin (WLD)
+
+**Gaming & Metaverse:**
+The Sandbox (SAND), Decentraland (MANA), Axie Infinity (AXS)
+Gala (GALA), Enjin Coin (ENJ), Illuvium (ILV), STEPN (GMT)
+
+**Popular Examples:**
 /price bitcoin
 /price ethereum
 /price dogecoin
 /price memecore
 /price m
+/price shib
+/price pepe
+/price bonk
+/price arbitrum
+/price optimism
 /top10
 /top20
 
